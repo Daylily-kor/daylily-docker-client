@@ -1,2 +1,3 @@
-# daylily-docker-client
-A gRPC Go Client that interacts with Docker
+# daylily-grpc-server
+
+A gRPC Go Server that interacts with Docker daemon using Docker API.
