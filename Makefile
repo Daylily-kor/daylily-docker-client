@@ -1,7 +1,7 @@
 .PHONY: dockerpb build run clean test
 
-dockerpb:
-	protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative proto/dockerpb/dockerpb.proto
+proto:
+	protoc --proto_path=pb --go_out=pb --go_opt=module=github.com/Daylily-kor/daylily-grpc-server/pb --go-grpc_out=pb --go-grpc_opt=module=github.com/Daylily-kor/daylily-grpc-server/pb pb/*.proto
 
 build:
 	go build -o bin/server.exe ./cmd/server

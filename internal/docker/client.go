@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/docker/docker/api/types"
 	dockerContainer "github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/api/types/filters"
 	dockerClient "github.com/docker/docker/client"
@@ -24,34 +23,28 @@ func NewClient() (*Client, error) {
 	return &Client{Client: client}, nil
 }
 
-// GetVersion returns the Docker server version
-func (c *Client) GetVersion(ctx context.Context) (*types.Version, error) {
-	version, err := c.ServerVersion(ctx)
-	if err != nil {
-		return nil, fmt.Errorf("failed to get Docker server version: %w", err)
-	}
-	return &version, nil
-}
-
 // FindTraefikNetwork finds the network used by the Traefik container
 func (c *Client) FindTraefikNetwork(ctx context.Context) (string, error) {
+	// List all containers with the label
 	args := filters.NewArgs()
-	// Should be "daylily" in production
 	args.Add("label", "com.docker.compose.service=traefik")
-	ctrs, err := c.ContainerList(ctx, dockerContainer.ListOptions{All: true, Filters: args})
-	if err != nil || len(ctrs) == 0 {
+	containers, err := c.ContainerList(ctx, dockerContainer.ListOptions{All: true, Filters: args})
+	if err != nil || len(containers) == 0 {
 		return "", fmt.Errorf("failed to find traefik container: %w", err)
 	}
 
-	for networkName := range ctrs[0].NetworkSettings.Networks {
+	// Get the network name from the traefik container
+	for networkName := range containers[0].NetworkSettings.Networks {
 		return networkName, nil
 	}
 
+	// Probably should not reach
 	return "", fmt.Errorf("traefik has no networks")
 }
 
 // DiscoverPorts discovers the exposed ports of a Docker image
 func (c *Client) DiscoverPorts(ctx context.Context, imageID string) (string, error) {
+	// Inspect the docker image of given Image ID
 	inspectResp, err := c.ImageInspect(ctx, imageID)
 	if err != nil {
 		return "", fmt.Errorf("failed to inspect image %s: %w", imageID, err)
@@ -61,6 +54,7 @@ func (c *Client) DiscoverPorts(ctx context.Context, imageID string) (string, err
 		return "", fmt.Errorf("no exposed ports found for image %s", imageID)
 	}
 
+	// Return the first exposed port found
 	for port := range inspectResp.Config.ExposedPorts {
 		return port, nil
 	}

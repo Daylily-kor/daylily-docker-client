@@ -3,17 +3,18 @@ package docker
 import (
 	"context"
 	"fmt"
+	"time"
 
-	"github.com/Daylily-kor/daylily-docker-client/internal/logger"
-	"github.com/Daylily-kor/daylily-docker-client/proto/dockerpb"
+	"github.com/Daylily-kor/daylily-grpc-server/internal/logger"
+	"github.com/Daylily-kor/daylily-grpc-server/pb/run"
 
 	dockerContainer "github.com/docker/docker/api/types/container"
 	dockerNetwork "github.com/docker/docker/api/types/network"
-	"github.com/lithammer/shortuuid/v4"
 )
 
 // Run starts a Docker container from an image
-func (c *Client) Run(ctx context.Context, req *dockerpb.RunRequest) (*dockerpb.RunResponse, error) {
+func (c *Client) Run(ctx context.Context, req *run.RunRequest) (*run.RunResponse, error) {
+	// Find the Docker network used by Traefik
 	networkName, err := c.FindTraefikNetwork(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed to find Traefik network: %w", err)
@@ -21,11 +22,12 @@ func (c *Client) Run(ctx context.Context, req *dockerpb.RunRequest) (*dockerpb.R
 		logger.Debug("Found Traefik network", "network_name", networkName)
 	}
 
-	port, err := c.DiscoverPorts(ctx, req.ImageName)
+	// Discover the exposed port for the image and use the first one
+	port, err := c.DiscoverPorts(ctx, req.ImageId)
 	if err != nil {
-		return nil, fmt.Errorf("failed to discover ports for image %s: %w", req.ImageName, err)
+		return nil, fmt.Errorf("failed to discover ports for image %s: %w", req.ImageId, err)
 	} else {
-		logger.Debug("Discovered port for image", "port", port, "image", req.ImageName)
+		logger.Debug("Discovered port for image", "port", port, "image_id", req.ImageId)
 	}
 
 	// Configure the network for the container
@@ -35,39 +37,52 @@ func (c *Client) Run(ctx context.Context, req *dockerpb.RunRequest) (*dockerpb.R
 		},
 	}
 
-	containerName := shortuuid.New()
-	createResp, err := c.ContainerCreate(
-		ctx,
-		&dockerContainer.Config{
-			Image: req.ImageName,
-			Tty:   false,
-			Labels: map[string]string{
-				"traefik.enable": "true",
-				"traefik.http.routers." + containerName + ".rule":                      "Host(`test.docker.localhost`)",
-				"traefik.http.services." + containerName + ".loadbalancer.server.port": port,
-			},
+	containerName := req.ContainerName
+	containerConfig := &dockerContainer.Config{
+		Image: req.ImageId,
+		Tty:   false,
+		Labels: map[string]string{
+			"traefik.enable": "true",
+			"traefik.http.routers." + containerName + ".rule":                      "Host(`test.docker.localhost`)",
+			"traefik.http.services." + containerName + ".loadbalancer.server.port": port,
 		},
-		nil,
-		networkConfig,
-		nil,
-		containerName,
-	)
+	}
+
+	// Create the container
+	createResp, err := c.ContainerCreate(ctx, containerConfig, nil, networkConfig, nil, containerName)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create container: %w", err)
 	} else {
 		logger.Debug("Container created", "container_id", createResp.ID, "name", containerName)
 	}
 
+	// Start the container
 	if err := c.ContainerStart(ctx, createResp.ID, dockerContainer.StartOptions{}); err != nil {
 		return nil, fmt.Errorf("failed to start container: %w", err)
 	}
 
+	// Inspect the container to check its status
 	inspectResp, err := c.ContainerInspect(ctx, createResp.ID)
 	if err != nil {
 		return nil, fmt.Errorf("failed to inspect container: %w", err)
 	} else {
 		logger.Debug("Container inspected", "container_id", createResp.ID, "status", inspectResp.State.Status)
 	}
+
+	// Fire container stop after 1 minute
+	go func(id string) {
+		ctx, cancel := context.WithTimeout(context.Background(), 1*time.Minute)
+		defer cancel()
+
+		<-ctx.Done()
+		logger.Debug("Stopping container after timeout", "container_id", id)
+
+		if err := c.ContainerStop(context.Background(), id, dockerContainer.StopOptions{}); err != nil {
+			logger.Error("Failed to stop container", "container_id", id, "error", err)
+		} else {
+			logger.Info("Container stopped successfully", "container_id", id)
+		}
+	}(createResp.ID)
 
 	switch inspectResp.State.Status {
 	case "created", "restarting", "running":
@@ -80,8 +95,9 @@ func (c *Client) Run(ctx context.Context, req *dockerpb.RunRequest) (*dockerpb.R
 		return nil, fmt.Errorf("container %s is in an unknown state: %s", createResp.ID, inspectResp.State.Status)
 	}
 
-	return &dockerpb.RunResponse{
-		ContainerId: createResp.ID,
-		Status:      "Container started successfully",
+	return &run.RunResponse{
+		ContainerId:   createResp.ID,
+		ContainerName: containerName,
+		Status:        inspectResp.State.Status,
 	}, nil
 }

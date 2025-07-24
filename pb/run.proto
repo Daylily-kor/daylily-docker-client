@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package com.daylily.pb;
+
+option go_package = "github.com/Daylily-kor/daylily-grpc-server/pb/run";
+option java_multiple_files = true;
+option java_package = "com.daylily.proto.run";
+
+message RunRequest {
+  string image_id = 1;
+  string container_name = 2;
+}
+
+message RunResponse {
+  string container_id = 1;
+  string container_name = 2;
+  string status = 3;
+}

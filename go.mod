@@ -1,11 +1,10 @@
-module github.com/Daylily-kor/daylily-docker-client
+module github.com/Daylily-kor/daylily-grpc-server
 
 go 1.23.11
 
 require github.com/docker/docker v28.3.1+incompatible
 
 require (
-	github.com/lithammer/shortuuid/v4 v4.2.0
 	github.com/moby/buildkit v0.23.2
 	github.com/rs/zerolog v1.34.0
 	google.golang.org/grpc v1.73.0

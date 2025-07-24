@@ -5,9 +5,9 @@ import (
 
 	"google.golang.org/grpc"
 
-	"github.com/Daylily-kor/daylily-docker-client/internal/docker"
-	grpcServer "github.com/Daylily-kor/daylily-docker-client/internal/grpc"
-	"github.com/Daylily-kor/daylily-docker-client/internal/logger"
+	"github.com/Daylily-kor/daylily-grpc-server/internal/docker"
+	grpcServer "github.com/Daylily-kor/daylily-grpc-server/internal/grpc"
+	"github.com/Daylily-kor/daylily-grpc-server/internal/logger"
 )
 
 func main() {
@@ -31,6 +31,7 @@ func main() {
 	grpcServer.RegisterServer(server, dockerClient)
 
 	// Create listener
+	// TODO: 서버 주소와 포트를 구성파일로 설정할 수 있도록 변경
 	listener, err := net.Listen("tcp", "127.0.0.1:50051")
 	if err != nil {
 		logger.Fatal("Failed to listen on port 50051", "error", err)

@@ -8,7 +8,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"github.com/Daylily-kor/daylily-docker-client/internal/logger"
+	"github.com/Daylily-kor/daylily-grpc-server/internal/logger"
 )
 
 // LoggingInterceptor logs gRPC requests

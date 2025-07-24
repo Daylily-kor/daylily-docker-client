@@ -7,15 +7,15 @@ import (
 	"net"
 	"os"
 
-	"github.com/Daylily-kor/daylily-docker-client/internal/logger"
-	"github.com/Daylily-kor/daylily-docker-client/proto/dockerpb"
-	"github.com/Daylily-kor/daylily-docker-client/util"
-	"github.com/docker/docker/api/types/build"
+	"github.com/Daylily-kor/daylily-grpc-server/internal/logger"
+	"github.com/Daylily-kor/daylily-grpc-server/pb/build"
+	"github.com/Daylily-kor/daylily-grpc-server/util"
+	dockerBuildTypes "github.com/docker/docker/api/types/build"
 	"github.com/moby/buildkit/session"
 )
 
 // Build builds a Docker image from a GitHub repository
-func (c *Client) Build(ctx context.Context, req *dockerpb.BuildRequest) (*dockerpb.BuildResponse, error) {
+func (c *Client) Build(ctx context.Context, req *build.ImageBuildRequest) (*build.ImageBuildResponse, error) {
 	// https://github.com/moby/moby/issues/48112#issuecomment-2916141864
 	sess, err := session.NewSession(ctx, "secret123")
 	if err != nil {
@@ -31,31 +31,45 @@ func (c *Client) Build(ctx context.Context, req *dockerpb.BuildRequest) (*docker
 	}()
 	defer sess.Close()
 
-	remote := fmt.Sprintf("https://github.com/%s/%s.git#%s", req.Owner, req.Repository, req.Ref)
-	pr, sha, err := util.RandomBuildImageName()
-	if err != nil {
-		return nil, fmt.Errorf("failed to generate random image name: %w", err)
-	}
+	// URL to the remote GitHub repository
+	// Ex: https://github.com/Daylily-kor/daylily-grpc-server.git#main
+	remote := fmt.Sprintf("https://github.com/%s.git#%s", req.RepositoryName, req.Ref)
 
-	imageName := fmt.Sprintf("%s/%s", req.Owner, req.Repository)
-	tags := []string{
-		fmt.Sprintf("%s:pr-%d-%s", imageName, pr, sha),
-	}
+	// Tags for the image
+	// Ex: pr-<pr_number>-<commit_hash>
+	tag := fmt.Sprintf("pr-%d-%s", req.PrNumber, req.Sha)
 
-	imageBuildResp, err := c.ImageBuild(ctx, bytes.NewReader(nil), build.ImageBuildOptions{
+	// Docker image name
+	// Ex: Daylily-kor/daylily-grpc-server:<tag>
+	imageName := req.RepositoryName + ":" + tag
+
+	opts := dockerBuildTypes.ImageBuildOptions{
 		RemoteContext: remote,
-		Tags:          tags,
+		Tags:          []string{imageName},
 		Version:       "2",
 		SessionID:     sess.ID(),
-	})
+	}
+
+	// Build image
+	imageBuildResp, err := c.ImageBuild(ctx, bytes.NewReader(nil), opts)
 	if err != nil {
 		return nil, fmt.Errorf("failed to build image: %w", err)
 	}
 	defer imageBuildResp.Body.Close()
 
+	// Stream build output to stdout
 	if err := util.StreamBuildOutput(ctx, imageBuildResp.Body, os.Stdout); err != nil {
 		return nil, fmt.Errorf("build failed: %w", err)
 	}
 
-	return &dockerpb.BuildResponse{ImageName: imageName}, nil
+	imageInspectResp, err := c.ImageInspect(ctx, imageName)
+	if err != nil {
+		return nil, fmt.Errorf("failed to inspect image: %w", err)
+	}
+
+	return &build.ImageBuildResponse{
+		ImageId:   imageInspectResp.ID,
+		ImageName: req.RepositoryName,
+		ImageTag:  tag,
+	}, nil
 }

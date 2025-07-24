@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package com.daylily.pb;
+
+import "google/protobuf/empty.proto";
+import "version.proto";
+import "build.proto";
+import "run.proto";
+
+option go_package = "github.com/Daylily-kor/daylily-grpc-server/pb/service";
+option java_multiple_files = true;
+option java_package = "com.daylily.proto.service";
+
+service DockerService {
+  rpc Version(google.protobuf.Empty) returns (VersionResponse);
+  rpc Build(ImageBuildRequest) returns (ImageBuildResponse);
+  rpc Run(RunRequest) returns (RunResponse);
+}
