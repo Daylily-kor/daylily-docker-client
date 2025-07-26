@@ -12,7 +12,7 @@ option java_multiple_files = true;
 option java_package = "com.daylily.proto.service";
 
 service DockerService {
-  rpc Version(google.protobuf.Empty) returns (VersionResponse);
-  rpc Build(ImageBuildRequest) returns (ImageBuildResponse);
-  rpc Run(RunRequest) returns (RunResponse);
+  rpc Version(google.protobuf.Empty) returns (GrpcDockerVersionResponse);
+  rpc ImageBuild(GrpcImageBuildRequest) returns (GrpcImageBuildResponse);
+  rpc ContainerRun(GrpcContainerRunRequest) returns (GrpcContainerRunResponse);
 }

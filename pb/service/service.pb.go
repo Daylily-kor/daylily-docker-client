@@ -28,28 +28,29 @@ var File_service_proto protoreflect.FileDescriptor
 
 const file_service_proto_rawDesc = "" +
 	"\n" +
-	"\rservice.proto\x12\x0ecom.daylily.pb\x1a\x1bgoogle/protobuf/empty.proto\x1a\rversion.proto\x1a\vbuild.proto\x1a\trun.proto2\xe3\x01\n" +
-	"\rDockerService\x12B\n" +
-	"\aVersion\x12\x16.google.protobuf.Empty\x1a\x1f.com.daylily.pb.VersionResponse\x12N\n" +
-	"\x05Build\x12!.com.daylily.pb.ImageBuildRequest\x1a\".com.daylily.pb.ImageBuildResponse\x12>\n" +
-	"\x03Run\x12\x1a.com.daylily.pb.RunRequest\x1a\x1b.com.daylily.pb.RunResponseBT\n" +
+	"\rservice.proto\x12\x0ecom.daylily.pb\x1a\x1bgoogle/protobuf/empty.proto\x1a\rversion.proto\x1a\vbuild.proto\x1a\trun.proto2\x9d\x02\n" +
+	"\rDockerService\x12L\n" +
+	"\aVersion\x12\x16.google.protobuf.Empty\x1a).com.daylily.pb.GrpcDockerVersionResponse\x12[\n" +
+	"\n" +
+	"ImageBuild\x12%.com.daylily.pb.GrpcImageBuildRequest\x1a&.com.daylily.pb.GrpcImageBuildResponse\x12a\n" +
+	"\fContainerRun\x12'.com.daylily.pb.GrpcContainerRunRequest\x1a(.com.daylily.pb.GrpcContainerRunResponseBT\n" +
 	"\x19com.daylily.proto.serviceP\x01Z5github.com/Daylily-kor/daylily-grpc-server/pb/serviceb\x06proto3"
 
 var file_service_proto_goTypes = []any{
-	(*emptypb.Empty)(nil),            // 0: google.protobuf.Empty
-	(*build.ImageBuildRequest)(nil),  // 1: com.daylily.pb.ImageBuildRequest
-	(*run.RunRequest)(nil),           // 2: com.daylily.pb.RunRequest
-	(*version.VersionResponse)(nil),  // 3: com.daylily.pb.VersionResponse
-	(*build.ImageBuildResponse)(nil), // 4: com.daylily.pb.ImageBuildResponse
-	(*run.RunResponse)(nil),          // 5: com.daylily.pb.RunResponse
+	(*emptypb.Empty)(nil),                     // 0: google.protobuf.Empty
+	(*build.GrpcImageBuildRequest)(nil),       // 1: com.daylily.pb.GrpcImageBuildRequest
+	(*run.GrpcContainerRunRequest)(nil),       // 2: com.daylily.pb.GrpcContainerRunRequest
+	(*version.GrpcDockerVersionResponse)(nil), // 3: com.daylily.pb.GrpcDockerVersionResponse
+	(*build.GrpcImageBuildResponse)(nil),      // 4: com.daylily.pb.GrpcImageBuildResponse
+	(*run.GrpcContainerRunResponse)(nil),      // 5: com.daylily.pb.GrpcContainerRunResponse
 }
 var file_service_proto_depIdxs = []int32{
 	0, // 0: com.daylily.pb.DockerService.Version:input_type -> google.protobuf.Empty
-	1, // 1: com.daylily.pb.DockerService.Build:input_type -> com.daylily.pb.ImageBuildRequest
-	2, // 2: com.daylily.pb.DockerService.Run:input_type -> com.daylily.pb.RunRequest
-	3, // 3: com.daylily.pb.DockerService.Version:output_type -> com.daylily.pb.VersionResponse
-	4, // 4: com.daylily.pb.DockerService.Build:output_type -> com.daylily.pb.ImageBuildResponse
-	5, // 5: com.daylily.pb.DockerService.Run:output_type -> com.daylily.pb.RunResponse
+	1, // 1: com.daylily.pb.DockerService.ImageBuild:input_type -> com.daylily.pb.GrpcImageBuildRequest
+	2, // 2: com.daylily.pb.DockerService.ContainerRun:input_type -> com.daylily.pb.GrpcContainerRunRequest
+	3, // 3: com.daylily.pb.DockerService.Version:output_type -> com.daylily.pb.GrpcDockerVersionResponse
+	4, // 4: com.daylily.pb.DockerService.ImageBuild:output_type -> com.daylily.pb.GrpcImageBuildResponse
+	5, // 5: com.daylily.pb.DockerService.ContainerRun:output_type -> com.daylily.pb.GrpcContainerRunResponse
 	3, // [3:6] is the sub-list for method output_type
 	0, // [0:3] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name

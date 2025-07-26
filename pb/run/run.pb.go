@@ -21,7 +21,7 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type RunRequest struct {
+type GrpcContainerRunRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	ImageId       string                 `protobuf:"bytes,1,opt,name=image_id,json=imageId,proto3" json:"image_id,omitempty"`
 	ContainerName string                 `protobuf:"bytes,2,opt,name=container_name,json=containerName,proto3" json:"container_name,omitempty"`
@@ -29,20 +29,20 @@ type RunRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *RunRequest) Reset() {
-	*x = RunRequest{}
+func (x *GrpcContainerRunRequest) Reset() {
+	*x = GrpcContainerRunRequest{}
 	mi := &file_run_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *RunRequest) String() string {
+func (x *GrpcContainerRunRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*RunRequest) ProtoMessage() {}
+func (*GrpcContainerRunRequest) ProtoMessage() {}
 
-func (x *RunRequest) ProtoReflect() protoreflect.Message {
+func (x *GrpcContainerRunRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_run_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -54,26 +54,26 @@ func (x *RunRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use RunRequest.ProtoReflect.Descriptor instead.
-func (*RunRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use GrpcContainerRunRequest.ProtoReflect.Descriptor instead.
+func (*GrpcContainerRunRequest) Descriptor() ([]byte, []int) {
 	return file_run_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *RunRequest) GetImageId() string {
+func (x *GrpcContainerRunRequest) GetImageId() string {
 	if x != nil {
 		return x.ImageId
 	}
 	return ""
 }
 
-func (x *RunRequest) GetContainerName() string {
+func (x *GrpcContainerRunRequest) GetContainerName() string {
 	if x != nil {
 		return x.ContainerName
 	}
 	return ""
 }
 
-type RunResponse struct {
+type GrpcContainerRunResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	ContainerId   string                 `protobuf:"bytes,1,opt,name=container_id,json=containerId,proto3" json:"container_id,omitempty"`
 	ContainerName string                 `protobuf:"bytes,2,opt,name=container_name,json=containerName,proto3" json:"container_name,omitempty"`
@@ -82,20 +82,20 @@ type RunResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *RunResponse) Reset() {
-	*x = RunResponse{}
+func (x *GrpcContainerRunResponse) Reset() {
+	*x = GrpcContainerRunResponse{}
 	mi := &file_run_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *RunResponse) String() string {
+func (x *GrpcContainerRunResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*RunResponse) ProtoMessage() {}
+func (*GrpcContainerRunResponse) ProtoMessage() {}
 
-func (x *RunResponse) ProtoReflect() protoreflect.Message {
+func (x *GrpcContainerRunResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_run_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -107,26 +107,26 @@ func (x *RunResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use RunResponse.ProtoReflect.Descriptor instead.
-func (*RunResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use GrpcContainerRunResponse.ProtoReflect.Descriptor instead.
+func (*GrpcContainerRunResponse) Descriptor() ([]byte, []int) {
 	return file_run_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *RunResponse) GetContainerId() string {
+func (x *GrpcContainerRunResponse) GetContainerId() string {
 	if x != nil {
 		return x.ContainerId
 	}
 	return ""
 }
 
-func (x *RunResponse) GetContainerName() string {
+func (x *GrpcContainerRunResponse) GetContainerName() string {
 	if x != nil {
 		return x.ContainerName
 	}
 	return ""
 }
 
-func (x *RunResponse) GetStatus() string {
+func (x *GrpcContainerRunResponse) GetStatus() string {
 	if x != nil {
 		return x.Status
 	}
@@ -137,12 +137,11 @@ var File_run_proto protoreflect.FileDescriptor
 
 const file_run_proto_rawDesc = "" +
 	"\n" +
-	"\trun.proto\x12\x0ecom.daylily.pb\"N\n" +
-	"\n" +
-	"RunRequest\x12\x19\n" +
+	"\trun.proto\x12\x0ecom.daylily.pb\"[\n" +
+	"\x17GrpcContainerRunRequest\x12\x19\n" +
 	"\bimage_id\x18\x01 \x01(\tR\aimageId\x12%\n" +
-	"\x0econtainer_name\x18\x02 \x01(\tR\rcontainerName\"o\n" +
-	"\vRunResponse\x12!\n" +
+	"\x0econtainer_name\x18\x02 \x01(\tR\rcontainerName\"|\n" +
+	"\x18GrpcContainerRunResponse\x12!\n" +
 	"\fcontainer_id\x18\x01 \x01(\tR\vcontainerId\x12%\n" +
 	"\x0econtainer_name\x18\x02 \x01(\tR\rcontainerName\x12\x16\n" +
 	"\x06status\x18\x03 \x01(\tR\x06statusBL\n" +
@@ -162,8 +161,8 @@ func file_run_proto_rawDescGZIP() []byte {
 
 var file_run_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_run_proto_goTypes = []any{
-	(*RunRequest)(nil),  // 0: com.daylily.pb.RunRequest
-	(*RunResponse)(nil), // 1: com.daylily.pb.RunResponse
+	(*GrpcContainerRunRequest)(nil),  // 0: com.daylily.pb.GrpcContainerRunRequest
+	(*GrpcContainerRunResponse)(nil), // 1: com.daylily.pb.GrpcContainerRunResponse
 }
 var file_run_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type

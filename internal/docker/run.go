@@ -13,7 +13,7 @@ import (
 )
 
 // Run starts a Docker container from an image
-func (c *Client) Run(ctx context.Context, req *run.RunRequest) (*run.RunResponse, error) {
+func (c *Client) Run(ctx context.Context, req *run.GrpcContainerRunRequest) (*run.GrpcContainerRunResponse, error) {
 	// Find the Docker network used by Traefik
 	networkName, err := c.FindTraefikNetwork(ctx)
 	if err != nil {
@@ -95,7 +95,7 @@ func (c *Client) Run(ctx context.Context, req *run.RunRequest) (*run.RunResponse
 		return nil, fmt.Errorf("container %s is in an unknown state: %s", createResp.ID, inspectResp.State.Status)
 	}
 
-	return &run.RunResponse{
+	return &run.GrpcContainerRunResponse{
 		ContainerId:   createResp.ID,
 		ContainerName: containerName,
 		Status:        inspectResp.State.Status,

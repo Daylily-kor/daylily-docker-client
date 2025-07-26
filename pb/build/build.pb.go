@@ -21,7 +21,7 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type ImageBuildRequest struct {
+type GrpcImageBuildRequest struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
 	RepositoryName string                 `protobuf:"bytes,1,opt,name=repository_name,json=repositoryName,proto3" json:"repository_name,omitempty"`
 	Ref            string                 `protobuf:"bytes,2,opt,name=ref,proto3" json:"ref,omitempty"`
@@ -31,20 +31,20 @@ type ImageBuildRequest struct {
 	sizeCache      protoimpl.SizeCache
 }
 
-func (x *ImageBuildRequest) Reset() {
-	*x = ImageBuildRequest{}
+func (x *GrpcImageBuildRequest) Reset() {
+	*x = GrpcImageBuildRequest{}
 	mi := &file_build_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ImageBuildRequest) String() string {
+func (x *GrpcImageBuildRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ImageBuildRequest) ProtoMessage() {}
+func (*GrpcImageBuildRequest) ProtoMessage() {}
 
-func (x *ImageBuildRequest) ProtoReflect() protoreflect.Message {
+func (x *GrpcImageBuildRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_build_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -56,40 +56,40 @@ func (x *ImageBuildRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ImageBuildRequest.ProtoReflect.Descriptor instead.
-func (*ImageBuildRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use GrpcImageBuildRequest.ProtoReflect.Descriptor instead.
+func (*GrpcImageBuildRequest) Descriptor() ([]byte, []int) {
 	return file_build_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *ImageBuildRequest) GetRepositoryName() string {
+func (x *GrpcImageBuildRequest) GetRepositoryName() string {
 	if x != nil {
 		return x.RepositoryName
 	}
 	return ""
 }
 
-func (x *ImageBuildRequest) GetRef() string {
+func (x *GrpcImageBuildRequest) GetRef() string {
 	if x != nil {
 		return x.Ref
 	}
 	return ""
 }
 
-func (x *ImageBuildRequest) GetPrNumber() int32 {
+func (x *GrpcImageBuildRequest) GetPrNumber() int32 {
 	if x != nil {
 		return x.PrNumber
 	}
 	return 0
 }
 
-func (x *ImageBuildRequest) GetSha() string {
+func (x *GrpcImageBuildRequest) GetSha() string {
 	if x != nil {
 		return x.Sha
 	}
 	return ""
 }
 
-type ImageBuildResponse struct {
+type GrpcImageBuildResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	ImageId       string                 `protobuf:"bytes,1,opt,name=image_id,json=imageId,proto3" json:"image_id,omitempty"`
 	ImageName     string                 `protobuf:"bytes,2,opt,name=image_name,json=imageName,proto3" json:"image_name,omitempty"`
@@ -98,20 +98,20 @@ type ImageBuildResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ImageBuildResponse) Reset() {
-	*x = ImageBuildResponse{}
+func (x *GrpcImageBuildResponse) Reset() {
+	*x = GrpcImageBuildResponse{}
 	mi := &file_build_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ImageBuildResponse) String() string {
+func (x *GrpcImageBuildResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ImageBuildResponse) ProtoMessage() {}
+func (*GrpcImageBuildResponse) ProtoMessage() {}
 
-func (x *ImageBuildResponse) ProtoReflect() protoreflect.Message {
+func (x *GrpcImageBuildResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_build_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -123,26 +123,26 @@ func (x *ImageBuildResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ImageBuildResponse.ProtoReflect.Descriptor instead.
-func (*ImageBuildResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use GrpcImageBuildResponse.ProtoReflect.Descriptor instead.
+func (*GrpcImageBuildResponse) Descriptor() ([]byte, []int) {
 	return file_build_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *ImageBuildResponse) GetImageId() string {
+func (x *GrpcImageBuildResponse) GetImageId() string {
 	if x != nil {
 		return x.ImageId
 	}
 	return ""
 }
 
-func (x *ImageBuildResponse) GetImageName() string {
+func (x *GrpcImageBuildResponse) GetImageName() string {
 	if x != nil {
 		return x.ImageName
 	}
 	return ""
 }
 
-func (x *ImageBuildResponse) GetImageTag() string {
+func (x *GrpcImageBuildResponse) GetImageTag() string {
 	if x != nil {
 		return x.ImageTag
 	}
@@ -153,13 +153,13 @@ var File_build_proto protoreflect.FileDescriptor
 
 const file_build_proto_rawDesc = "" +
 	"\n" +
-	"\vbuild.proto\x12\x0ecom.daylily.pb\"}\n" +
-	"\x11ImageBuildRequest\x12'\n" +
+	"\vbuild.proto\x12\x0ecom.daylily.pb\"\x81\x01\n" +
+	"\x15GrpcImageBuildRequest\x12'\n" +
 	"\x0frepository_name\x18\x01 \x01(\tR\x0erepositoryName\x12\x10\n" +
 	"\x03ref\x18\x02 \x01(\tR\x03ref\x12\x1b\n" +
 	"\tpr_number\x18\x03 \x01(\x05R\bprNumber\x12\x10\n" +
-	"\x03sha\x18\x04 \x01(\tR\x03sha\"k\n" +
-	"\x12ImageBuildResponse\x12\x19\n" +
+	"\x03sha\x18\x04 \x01(\tR\x03sha\"o\n" +
+	"\x16GrpcImageBuildResponse\x12\x19\n" +
 	"\bimage_id\x18\x01 \x01(\tR\aimageId\x12\x1d\n" +
 	"\n" +
 	"image_name\x18\x02 \x01(\tR\timageName\x12\x1b\n" +
@@ -180,8 +180,8 @@ func file_build_proto_rawDescGZIP() []byte {
 
 var file_build_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_build_proto_goTypes = []any{
-	(*ImageBuildRequest)(nil),  // 0: com.daylily.pb.ImageBuildRequest
-	(*ImageBuildResponse)(nil), // 1: com.daylily.pb.ImageBuildResponse
+	(*GrpcImageBuildRequest)(nil),  // 0: com.daylily.pb.GrpcImageBuildRequest
+	(*GrpcImageBuildResponse)(nil), // 1: com.daylily.pb.GrpcImageBuildResponse
 }
 var file_build_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type

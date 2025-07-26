@@ -15,7 +15,7 @@ import (
 )
 
 // Build builds a Docker image from a GitHub repository
-func (c *Client) Build(ctx context.Context, req *build.ImageBuildRequest) (*build.ImageBuildResponse, error) {
+func (c *Client) Build(ctx context.Context, req *build.GrpcImageBuildRequest) (*build.GrpcImageBuildResponse, error) {
 	// https://github.com/moby/moby/issues/48112#issuecomment-2916141864
 	sess, err := session.NewSession(ctx, "secret123")
 	if err != nil {
@@ -67,7 +67,7 @@ func (c *Client) Build(ctx context.Context, req *build.ImageBuildRequest) (*buil
 		return nil, fmt.Errorf("failed to inspect image: %w", err)
 	}
 
-	return &build.ImageBuildResponse{
+	return &build.GrpcImageBuildResponse{
 		ImageId:   imageInspectResp.ID,
 		ImageName: req.RepositoryName,
 		ImageTag:  tag,

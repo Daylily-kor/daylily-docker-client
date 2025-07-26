@@ -6,7 +6,7 @@ option go_package = "github.com/Daylily-kor/daylily-grpc-server/pb/version";
 option java_multiple_files = true;
 option java_package = "com.daylily.proto.version";
 
-message VersionResponse {
+message GrpcDockerVersionResponse {
   string version = 1;
   string api_version = 2;
   string platform = 3;

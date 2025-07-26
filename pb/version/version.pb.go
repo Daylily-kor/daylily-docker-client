@@ -21,7 +21,7 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type VersionResponse struct {
+type GrpcDockerVersionResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Version       string                 `protobuf:"bytes,1,opt,name=version,proto3" json:"version,omitempty"`
 	ApiVersion    string                 `protobuf:"bytes,2,opt,name=api_version,json=apiVersion,proto3" json:"api_version,omitempty"`
@@ -33,20 +33,20 @@ type VersionResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *VersionResponse) Reset() {
-	*x = VersionResponse{}
+func (x *GrpcDockerVersionResponse) Reset() {
+	*x = GrpcDockerVersionResponse{}
 	mi := &file_version_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *VersionResponse) String() string {
+func (x *GrpcDockerVersionResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*VersionResponse) ProtoMessage() {}
+func (*GrpcDockerVersionResponse) ProtoMessage() {}
 
-func (x *VersionResponse) ProtoReflect() protoreflect.Message {
+func (x *GrpcDockerVersionResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_version_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -58,47 +58,47 @@ func (x *VersionResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use VersionResponse.ProtoReflect.Descriptor instead.
-func (*VersionResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use GrpcDockerVersionResponse.ProtoReflect.Descriptor instead.
+func (*GrpcDockerVersionResponse) Descriptor() ([]byte, []int) {
 	return file_version_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *VersionResponse) GetVersion() string {
+func (x *GrpcDockerVersionResponse) GetVersion() string {
 	if x != nil {
 		return x.Version
 	}
 	return ""
 }
 
-func (x *VersionResponse) GetApiVersion() string {
+func (x *GrpcDockerVersionResponse) GetApiVersion() string {
 	if x != nil {
 		return x.ApiVersion
 	}
 	return ""
 }
 
-func (x *VersionResponse) GetPlatform() string {
+func (x *GrpcDockerVersionResponse) GetPlatform() string {
 	if x != nil {
 		return x.Platform
 	}
 	return ""
 }
 
-func (x *VersionResponse) GetOs() string {
+func (x *GrpcDockerVersionResponse) GetOs() string {
 	if x != nil {
 		return x.Os
 	}
 	return ""
 }
 
-func (x *VersionResponse) GetArch() string {
+func (x *GrpcDockerVersionResponse) GetArch() string {
 	if x != nil {
 		return x.Arch
 	}
 	return ""
 }
 
-func (x *VersionResponse) GetKernelVersion() string {
+func (x *GrpcDockerVersionResponse) GetKernelVersion() string {
 	if x != nil {
 		return x.KernelVersion
 	}
@@ -109,8 +109,8 @@ var File_version_proto protoreflect.FileDescriptor
 
 const file_version_proto_rawDesc = "" +
 	"\n" +
-	"\rversion.proto\x12\x0ecom.daylily.pb\"\xb3\x01\n" +
-	"\x0fVersionResponse\x12\x18\n" +
+	"\rversion.proto\x12\x0ecom.daylily.pb\"\xbd\x01\n" +
+	"\x19GrpcDockerVersionResponse\x12\x18\n" +
 	"\aversion\x18\x01 \x01(\tR\aversion\x12\x1f\n" +
 	"\vapi_version\x18\x02 \x01(\tR\n" +
 	"apiVersion\x12\x1a\n" +
@@ -134,7 +134,7 @@ func file_version_proto_rawDescGZIP() []byte {
 
 var file_version_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_version_proto_goTypes = []any{
-	(*VersionResponse)(nil), // 0: com.daylily.pb.VersionResponse
+	(*GrpcDockerVersionResponse)(nil), // 0: com.daylily.pb.GrpcDockerVersionResponse
 }
 var file_version_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type

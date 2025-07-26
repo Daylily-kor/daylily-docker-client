@@ -31,7 +31,7 @@ func NewServer(dockerClient *docker.Client) *Server {
 }
 
 // Version returns the Docker server version
-func (s *Server) Version(ctx context.Context, _ *emptypb.Empty) (*version.VersionResponse, error) {
+func (s *Server) Version(ctx context.Context, _ *emptypb.Empty) (*version.GrpcDockerVersionResponse, error) {
 	dockerVersion, err := s.dockerClient.Version(ctx)
 	if err != nil {
 		logger.Error("Error getting Docker server version", "error", logger.WithError(err))
@@ -46,7 +46,7 @@ func (s *Server) Version(ctx context.Context, _ *emptypb.Empty) (*version.Versio
 }
 
 // Build builds a Docker image from a GitHub repository
-func (s *Server) Build(ctx context.Context, in *build.ImageBuildRequest) (*build.ImageBuildResponse, error) {
+func (s *Server) Build(ctx context.Context, in *build.GrpcImageBuildRequest) (*build.GrpcImageBuildResponse, error) {
 	resp, err := s.dockerClient.Build(ctx, in)
 	if err != nil {
 		logger.Error("Error building image", "error", logger.WithError(err))
@@ -60,7 +60,7 @@ func (s *Server) Build(ctx context.Context, in *build.ImageBuildRequest) (*build
 }
 
 // Run starts a Docker container from an image
-func (s *Server) Run(ctx context.Context, in *run.RunRequest) (*run.RunResponse, error) {
+func (s *Server) Run(ctx context.Context, in *run.GrpcContainerRunRequest) (*run.GrpcContainerRunResponse, error) {
 	resp, err := s.dockerClient.Run(ctx, in)
 	if err != nil {
 		logger.Error("Error running container",
@@ -83,8 +83,8 @@ func RegisterServer(grpcServer *grpc.Server, dockerClient *docker.Client) {
 }
 
 // toVersionResponse converts Docker version to protobuf response
-func toVersionResponse(v *dockerTypes.Version) *version.VersionResponse {
-	return &version.VersionResponse{
+func toVersionResponse(v *dockerTypes.Version) *version.GrpcDockerVersionResponse {
+	return &version.GrpcDockerVersionResponse{
 		Version:       v.Version,
 		ApiVersion:    v.APIVersion,
 		Platform:      v.Platform.Name,
