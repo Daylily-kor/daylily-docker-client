@@ -45,6 +45,7 @@ func (c *Client) Run(ctx context.Context, req *run.GrpcContainerRunRequest) (*ru
 			"traefik.enable": "true",
 			"traefik.http.routers." + containerName + ".rule":                      "Host(`" + containerName + "`)",
 			"traefik.http.services." + containerName + ".loadbalancer.server.port": port,
+			"daylily.container": "true",
 		},
 	}
 
@@ -69,7 +70,7 @@ func (c *Client) Run(ctx context.Context, req *run.GrpcContainerRunRequest) (*ru
 		logger.Debug("Container inspected", "container_id", createResp.ID, "status", inspectResp.State.Status)
 	}
 
-	//Fire container stop after 1 minute
+	// Fire container stop after 1 minute
 	go func(id string) {
 		ctx, cancel := context.WithTimeout(context.Background(), 1*time.Minute)
 		defer cancel()

@@ -6,6 +6,7 @@ import "google/protobuf/empty.proto";
 import "version.proto";
 import "build.proto";
 import "run.proto";
+import "containerList.proto";
 
 option go_package = "github.com/Daylily-kor/daylily-grpc-server/pb/service";
 option java_multiple_files = true;
@@ -15,4 +16,5 @@ service DockerService {
   rpc Version(google.protobuf.Empty) returns (GrpcDockerVersionResponse);
   rpc ImageBuild(GrpcImageBuildRequest) returns (GrpcImageBuildResponse);
   rpc ContainerRun(GrpcContainerRunRequest) returns (GrpcContainerRunResponse);
+  rpc ContainerList(google.protobuf.Empty) returns (GrpcContainerListResponse);
 }

@@ -3,6 +3,8 @@ package grpc
 import (
 	"context"
 
+	"github.com/Daylily-kor/daylily-grpc-server/pb/containerList"
+
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -45,8 +47,8 @@ func (s *Server) Version(ctx context.Context, _ *emptypb.Empty) (*version.GrpcDo
 	return toVersionResponse(dockerVersion), nil
 }
 
-// Build builds a Docker image from a GitHub repository
-func (s *Server) Build(ctx context.Context, in *build.GrpcImageBuildRequest) (*build.GrpcImageBuildResponse, error) {
+// ImageBuild builds a Docker image from a GitHub repository
+func (s *Server) ImageBuild(ctx context.Context, in *build.GrpcImageBuildRequest) (*build.GrpcImageBuildResponse, error) {
 	resp, err := s.dockerClient.Build(ctx, in)
 	if err != nil {
 		logger.Error("Error building image", "error", logger.WithError(err))
@@ -59,8 +61,8 @@ func (s *Server) Build(ctx context.Context, in *build.GrpcImageBuildRequest) (*b
 	return resp, nil
 }
 
-// Run starts a Docker container from an image
-func (s *Server) Run(ctx context.Context, in *run.GrpcContainerRunRequest) (*run.GrpcContainerRunResponse, error) {
+// ContainerRun starts a Docker container from an image
+func (s *Server) ContainerRun(ctx context.Context, in *run.GrpcContainerRunRequest) (*run.GrpcContainerRunResponse, error) {
 	resp, err := s.dockerClient.Run(ctx, in)
 	if err != nil {
 		logger.Error("Error running container",
@@ -74,6 +76,18 @@ func (s *Server) Run(ctx context.Context, in *run.GrpcContainerRunRequest) (*run
 		"status", resp.Status)
 
 	return resp, nil
+}
+
+func (s *Server) ContainerList(ctx context.Context, _ *emptypb.Empty) (*containerList.GrpcContainerListResponse, error) {
+	containers, err := s.dockerClient.ListContainers(ctx)
+	if err != nil {
+		logger.Error("Error listing containers", "error", logger.WithError(err))
+		return nil, status.Errorf(codes.Internal, "failed to list containers: %v", err)
+	}
+
+	logger.Info("Retrieved list of containers")
+
+	return &containerList.GrpcContainerListResponse{Containers: containers}, nil
 }
 
 // RegisterServer registers the DockerService server with the gRPC server

@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package com.daylily.pb;
+
+option go_package = "github.com/Daylily-kor/daylily-grpc-server/pb/containerList";
+option java_multiple_files = true;
+option java_package = "com.daylily.proto.containerList";
+
+//message GrpcContainerListRequest {
+//
+//}
+
+message GrpcContainerResponse {
+  string id = 1;
+  string name = 2;
+  string url = 3;
+  string state = 4;
+  string status = 5;
+}
+
+message GrpcContainerListResponse {
+  repeated GrpcContainerResponse containers = 1;
+}

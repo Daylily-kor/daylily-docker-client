@@ -9,6 +9,7 @@ package service
 import (
 	context "context"
 	build "github.com/Daylily-kor/daylily-grpc-server/pb/build"
+	containerList "github.com/Daylily-kor/daylily-grpc-server/pb/containerList"
 	run "github.com/Daylily-kor/daylily-grpc-server/pb/run"
 	version "github.com/Daylily-kor/daylily-grpc-server/pb/version"
 	grpc "google.golang.org/grpc"
@@ -23,9 +24,10 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	DockerService_Version_FullMethodName      = "/com.daylily.pb.DockerService/Version"
-	DockerService_ImageBuild_FullMethodName   = "/com.daylily.pb.DockerService/ImageBuild"
-	DockerService_ContainerRun_FullMethodName = "/com.daylily.pb.DockerService/ContainerRun"
+	DockerService_Version_FullMethodName       = "/com.daylily.pb.DockerService/Version"
+	DockerService_ImageBuild_FullMethodName    = "/com.daylily.pb.DockerService/ImageBuild"
+	DockerService_ContainerRun_FullMethodName  = "/com.daylily.pb.DockerService/ContainerRun"
+	DockerService_ContainerList_FullMethodName = "/com.daylily.pb.DockerService/ContainerList"
 )
 
 // DockerServiceClient is the client API for DockerService service.
@@ -35,6 +37,7 @@ type DockerServiceClient interface {
 	Version(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*version.GrpcDockerVersionResponse, error)
 	ImageBuild(ctx context.Context, in *build.GrpcImageBuildRequest, opts ...grpc.CallOption) (*build.GrpcImageBuildResponse, error)
 	ContainerRun(ctx context.Context, in *run.GrpcContainerRunRequest, opts ...grpc.CallOption) (*run.GrpcContainerRunResponse, error)
+	ContainerList(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*containerList.GrpcContainerListResponse, error)
 }
 
 type dockerServiceClient struct {
@@ -75,6 +78,16 @@ func (c *dockerServiceClient) ContainerRun(ctx context.Context, in *run.GrpcCont
 	return out, nil
 }
 
+func (c *dockerServiceClient) ContainerList(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*containerList.GrpcContainerListResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(containerList.GrpcContainerListResponse)
+	err := c.cc.Invoke(ctx, DockerService_ContainerList_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // DockerServiceServer is the server API for DockerService service.
 // All implementations must embed UnimplementedDockerServiceServer
 // for forward compatibility.
@@ -82,6 +95,7 @@ type DockerServiceServer interface {
 	Version(context.Context, *emptypb.Empty) (*version.GrpcDockerVersionResponse, error)
 	ImageBuild(context.Context, *build.GrpcImageBuildRequest) (*build.GrpcImageBuildResponse, error)
 	ContainerRun(context.Context, *run.GrpcContainerRunRequest) (*run.GrpcContainerRunResponse, error)
+	ContainerList(context.Context, *emptypb.Empty) (*containerList.GrpcContainerListResponse, error)
 	mustEmbedUnimplementedDockerServiceServer()
 }
 
@@ -100,6 +114,9 @@ func (UnimplementedDockerServiceServer) ImageBuild(context.Context, *build.GrpcI
 }
 func (UnimplementedDockerServiceServer) ContainerRun(context.Context, *run.GrpcContainerRunRequest) (*run.GrpcContainerRunResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ContainerRun not implemented")
+}
+func (UnimplementedDockerServiceServer) ContainerList(context.Context, *emptypb.Empty) (*containerList.GrpcContainerListResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ContainerList not implemented")
 }
 func (UnimplementedDockerServiceServer) mustEmbedUnimplementedDockerServiceServer() {}
 func (UnimplementedDockerServiceServer) testEmbeddedByValue()                       {}
@@ -176,6 +193,24 @@ func _DockerService_ContainerRun_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _DockerService_ContainerList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(emptypb.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DockerServiceServer).ContainerList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DockerService_ContainerList_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DockerServiceServer).ContainerList(ctx, req.(*emptypb.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // DockerService_ServiceDesc is the grpc.ServiceDesc for DockerService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -194,6 +229,10 @@ var DockerService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ContainerRun",
 			Handler:    _DockerService_ContainerRun_Handler,
+		},
+		{
+			MethodName: "ContainerList",
+			Handler:    _DockerService_ContainerList_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
