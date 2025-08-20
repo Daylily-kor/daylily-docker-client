@@ -3,7 +3,9 @@ package docker
 import (
 	"context"
 	"fmt"
+	"strings"
 
+	"github.com/Daylily-kor/daylily-grpc-server/internal/logger"
 	dockerContainer "github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/api/types/filters"
 	dockerClient "github.com/docker/docker/client"
@@ -56,7 +58,12 @@ func (c *Client) DiscoverPorts(ctx context.Context, imageID string) (string, err
 
 	// Return the first exposed port found
 	for port := range inspectResp.Config.ExposedPorts {
-		return port, nil
+		logger.Debug("Discovered exposed port", "port", port)
+		// ex: 80/tcp, 12345/tcp -> needs to be sliced and return only port number
+		portParts := strings.Split(port, "/")
+		if len(portParts) > 0 {
+			return portParts[0], nil
+		}
 	}
 
 	return "", fmt.Errorf("no valid exposed ports found for image %s", imageID)
