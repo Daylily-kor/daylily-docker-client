@@ -13,10 +13,10 @@ option java_package = "com.daylily.proto.containerList";
 message GrpcContainerResponse {
   string id = 1;
   string name = 2;
-  string url = 3;
-  string state = 4;
-  string status = 5;
-  string commitSHA = 6;
+  string state = 3;
+  string status = 4;
+  string commitSHA = 5;
+  string container_url = 6;
 }
 
 message GrpcContainerListResponse {

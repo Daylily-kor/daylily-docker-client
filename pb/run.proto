@@ -16,5 +16,6 @@ message GrpcContainerRunRequest {
 message GrpcContainerRunResponse {
   string container_id = 1;
   string container_name = 2;
-  string status = 3;
+  string container_url = 3;
+  string status = 4;
 }

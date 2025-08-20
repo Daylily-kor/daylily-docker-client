@@ -93,7 +93,8 @@ type GrpcContainerRunResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	ContainerId   string                 `protobuf:"bytes,1,opt,name=container_id,json=containerId,proto3" json:"container_id,omitempty"`
 	ContainerName string                 `protobuf:"bytes,2,opt,name=container_name,json=containerName,proto3" json:"container_name,omitempty"`
-	Status        string                 `protobuf:"bytes,3,opt,name=status,proto3" json:"status,omitempty"`
+	ContainerUrl  string                 `protobuf:"bytes,3,opt,name=container_url,json=containerUrl,proto3" json:"container_url,omitempty"`
+	Status        string                 `protobuf:"bytes,4,opt,name=status,proto3" json:"status,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -142,6 +143,13 @@ func (x *GrpcContainerRunResponse) GetContainerName() string {
 	return ""
 }
 
+func (x *GrpcContainerRunResponse) GetContainerUrl() string {
+	if x != nil {
+		return x.ContainerUrl
+	}
+	return ""
+}
+
 func (x *GrpcContainerRunResponse) GetStatus() string {
 	if x != nil {
 		return x.Status
@@ -159,11 +167,12 @@ const file_run_proto_rawDesc = "" +
 	"\x0econtainer_name\x18\x02 \x01(\tR\rcontainerName\x12\x1c\n" +
 	"\tcommitSHA\x18\x03 \x01(\tR\tcommitSHA\x12\x1f\n" +
 	"\vbase_domain\x18\x04 \x01(\tR\n" +
-	"baseDomain\"|\n" +
+	"baseDomain\"\xa1\x01\n" +
 	"\x18GrpcContainerRunResponse\x12!\n" +
 	"\fcontainer_id\x18\x01 \x01(\tR\vcontainerId\x12%\n" +
-	"\x0econtainer_name\x18\x02 \x01(\tR\rcontainerName\x12\x16\n" +
-	"\x06status\x18\x03 \x01(\tR\x06statusBL\n" +
+	"\x0econtainer_name\x18\x02 \x01(\tR\rcontainerName\x12#\n" +
+	"\rcontainer_url\x18\x03 \x01(\tR\fcontainerUrl\x12\x16\n" +
+	"\x06status\x18\x04 \x01(\tR\x06statusBL\n" +
 	"\x15com.daylily.proto.runP\x01Z1github.com/Daylily-kor/daylily-grpc-server/pb/runb\x06proto3"
 
 var (

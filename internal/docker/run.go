@@ -49,6 +49,7 @@ func (c *Client) Run(ctx context.Context, req *run.GrpcContainerRunRequest) (*ru
 			"traefik.http.services." + containerName + ".loadbalancer.server.port": port,
 			"daylily.container":           "true",
 			"daylily.container.commitSHA": req.CommitSHA,
+			"daylily.container.url":       containerUrl,
 		},
 	}
 
@@ -130,5 +131,6 @@ func (c *Client) Run(ctx context.Context, req *run.GrpcContainerRunRequest) (*ru
 		ContainerId:   createResp.ID,
 		ContainerName: containerName,
 		Status:        inspectResp.State.Status,
+		ContainerUrl:  containerUrl,
 	}, nil
 }
