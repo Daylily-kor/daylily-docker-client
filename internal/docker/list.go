@@ -31,11 +31,12 @@ func (c *Client) ListContainers(ctx context.Context) ([]*containerList.GrpcConta
 		// Remove '/' prefix to get container name
 		name := strings.Split(container.Names[0], "/")[1]
 		r := &containerList.GrpcContainerResponse{
-			Id:     container.ID,
-			Name:   name,
-			Url:    name, // Assuming the name is used as the URL
-			State:  container.State,
-			Status: container.Status,
+			Id:        container.ID,
+			Name:      name,
+			Url:       name, // Assuming the name is used as the URL
+			State:     container.State,
+			Status:    container.Status,
+			CommitSHA: container.Labels["daylily.container.commitSHA"],
 		}
 		response = append(response, r)
 	}

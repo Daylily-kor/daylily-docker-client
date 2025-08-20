@@ -25,6 +25,7 @@ type GrpcContainerRunRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	ImageId       string                 `protobuf:"bytes,1,opt,name=image_id,json=imageId,proto3" json:"image_id,omitempty"`
 	ContainerName string                 `protobuf:"bytes,2,opt,name=container_name,json=containerName,proto3" json:"container_name,omitempty"`
+	CommitSHA     string                 `protobuf:"bytes,3,opt,name=commitSHA,proto3" json:"commitSHA,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -69,6 +70,13 @@ func (x *GrpcContainerRunRequest) GetImageId() string {
 func (x *GrpcContainerRunRequest) GetContainerName() string {
 	if x != nil {
 		return x.ContainerName
+	}
+	return ""
+}
+
+func (x *GrpcContainerRunRequest) GetCommitSHA() string {
+	if x != nil {
+		return x.CommitSHA
 	}
 	return ""
 }
@@ -137,10 +145,11 @@ var File_run_proto protoreflect.FileDescriptor
 
 const file_run_proto_rawDesc = "" +
 	"\n" +
-	"\trun.proto\x12\x0ecom.daylily.pb\"[\n" +
+	"\trun.proto\x12\x0ecom.daylily.pb\"y\n" +
 	"\x17GrpcContainerRunRequest\x12\x19\n" +
 	"\bimage_id\x18\x01 \x01(\tR\aimageId\x12%\n" +
-	"\x0econtainer_name\x18\x02 \x01(\tR\rcontainerName\"|\n" +
+	"\x0econtainer_name\x18\x02 \x01(\tR\rcontainerName\x12\x1c\n" +
+	"\tcommitSHA\x18\x03 \x01(\tR\tcommitSHA\"|\n" +
 	"\x18GrpcContainerRunResponse\x12!\n" +
 	"\fcontainer_id\x18\x01 \x01(\tR\vcontainerId\x12%\n" +
 	"\x0econtainer_name\x18\x02 \x01(\tR\rcontainerName\x12\x16\n" +

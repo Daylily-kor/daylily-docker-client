@@ -28,6 +28,7 @@ type GrpcContainerResponse struct {
 	Url           string                 `protobuf:"bytes,3,opt,name=url,proto3" json:"url,omitempty"`
 	State         string                 `protobuf:"bytes,4,opt,name=state,proto3" json:"state,omitempty"`
 	Status        string                 `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`
+	CommitSHA     string                 `protobuf:"bytes,6,opt,name=commitSHA,proto3" json:"commitSHA,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -97,6 +98,13 @@ func (x *GrpcContainerResponse) GetStatus() string {
 	return ""
 }
 
+func (x *GrpcContainerResponse) GetCommitSHA() string {
+	if x != nil {
+		return x.CommitSHA
+	}
+	return ""
+}
+
 type GrpcContainerListResponse struct {
 	state         protoimpl.MessageState   `protogen:"open.v1"`
 	Containers    []*GrpcContainerResponse `protobuf:"bytes,1,rep,name=containers,proto3" json:"containers,omitempty"`
@@ -145,13 +153,14 @@ var File_containerList_proto protoreflect.FileDescriptor
 
 const file_containerList_proto_rawDesc = "" +
 	"\n" +
-	"\x13containerList.proto\x12\x0ecom.daylily.pb\"{\n" +
+	"\x13containerList.proto\x12\x0ecom.daylily.pb\"\x99\x01\n" +
 	"\x15GrpcContainerResponse\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x10\n" +
 	"\x03url\x18\x03 \x01(\tR\x03url\x12\x14\n" +
 	"\x05state\x18\x04 \x01(\tR\x05state\x12\x16\n" +
-	"\x06status\x18\x05 \x01(\tR\x06status\"b\n" +
+	"\x06status\x18\x05 \x01(\tR\x06status\x12\x1c\n" +
+	"\tcommitSHA\x18\x06 \x01(\tR\tcommitSHA\"b\n" +
 	"\x19GrpcContainerListResponse\x12E\n" +
 	"\n" +
 	"containers\x18\x01 \x03(\v2%.com.daylily.pb.GrpcContainerResponseR\n" +

@@ -9,6 +9,7 @@ option java_package = "com.daylily.proto.run";
 message GrpcContainerRunRequest {
   string image_id = 1;
   string container_name = 2;
+  string commitSHA = 3;
 }
 
 message GrpcContainerRunResponse {

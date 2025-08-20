@@ -16,6 +16,7 @@ message GrpcContainerResponse {
   string url = 3;
   string state = 4;
   string status = 5;
+  string commitSHA = 6;
 }
 
 message GrpcContainerListResponse {

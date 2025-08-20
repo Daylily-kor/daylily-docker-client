@@ -9,6 +9,7 @@ import (
 	"github.com/Daylily-kor/daylily-grpc-server/pb/run"
 
 	dockerContainer "github.com/docker/docker/api/types/container"
+	"github.com/docker/docker/api/types/filters"
 	dockerNetwork "github.com/docker/docker/api/types/network"
 )
 
@@ -45,8 +46,36 @@ func (c *Client) Run(ctx context.Context, req *run.GrpcContainerRunRequest) (*ru
 			"traefik.enable": "true",
 			"traefik.http.routers." + containerName + ".rule":                      "Host(`" + containerName + "`)",
 			"traefik.http.services." + containerName + ".loadbalancer.server.port": port,
-			"daylily.container": "true",
+			"daylily.container":           "true",
+			"daylily.container.commitSHA": req.CommitSHA,
 		},
+	}
+
+	listOptions := dockerContainer.ListOptions{
+		All: true,
+		Filters: filters.NewArgs(
+			filters.KeyValuePair{Key: "name", Value: containerName},
+		),
+	}
+
+	containers, err := c.ContainerList(ctx, listOptions)
+	if err != nil {
+		return nil, err
+	}
+
+	logger.Debug("Found existing containers", "count", len(containers), "name", containerName)
+
+	// If the container already exists, remove it
+	if len(containers) > 0 {
+		if err := c.ContainerStop(ctx, containers[0].ID, dockerContainer.StopOptions{}); err != nil {
+			return nil, fmt.Errorf("failed to stop existing container: %w", err)
+		}
+
+		logger.Debug("Removing existing container", "container_id", containers[0].ID, "name", containerName, "state", containers[0].State)
+
+		if err := c.ContainerRemove(ctx, containers[0].ID, dockerContainer.RemoveOptions{}); err != nil {
+			return nil, fmt.Errorf("failed to remove existing container: %w", err)
+		}
 	}
 
 	// Create the container
