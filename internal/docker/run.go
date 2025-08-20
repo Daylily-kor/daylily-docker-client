@@ -39,12 +39,13 @@ func (c *Client) Run(ctx context.Context, req *run.GrpcContainerRunRequest) (*ru
 	}
 
 	containerName := req.ContainerName
+	containerUrl := fmt.Sprintf("%s.%s", containerName, req.BaseDomain)
 	containerConfig := &dockerContainer.Config{
 		Image: req.ImageId,
 		Tty:   false,
 		Labels: map[string]string{
 			"traefik.enable": "true",
-			"traefik.http.routers." + containerName + ".rule":                      "Host(`" + containerName + "`)",
+			"traefik.http.routers." + containerName + ".rule":                      "Host(`" + containerUrl + "`)",
 			"traefik.http.services." + containerName + ".loadbalancer.server.port": port,
 			"daylily.container":           "true",
 			"daylily.container.commitSHA": req.CommitSHA,

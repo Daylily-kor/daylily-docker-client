@@ -10,6 +10,7 @@ message GrpcContainerRunRequest {
   string image_id = 1;
   string container_name = 2;
   string commitSHA = 3;
+  string base_domain = 4;
 }
 
 message GrpcContainerRunResponse {
